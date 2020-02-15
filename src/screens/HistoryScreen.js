@@ -15,7 +15,7 @@ I18nManager.forceRTL(true);
 
 function HistoryScreen (props) {
   const {navigate} = props.navigation;
-  const [historyListToDo, setHistoryListToDo] = useState([]);
+  const [listToDoHistory, setListToDoHistory] = useState([]);
 
     useEffect(()=>{
         _retrieveData();
@@ -33,7 +33,7 @@ function HistoryScreen (props) {
           const value = await AsyncStorage.getItem('ToDoListHistory');
           console.log(JSON.parse(value));
           if (value !== null) {
-            setHistoryListToDo(JSON.parse(value));
+            setListToDoHistory(JSON.parse(value));
           }
       } catch (error) {
           // Error saving data
@@ -41,14 +41,14 @@ function HistoryScreen (props) {
     };
 
     const deleteItem = item =>{
-      const newData = historyListToDo.filter(val => val !== item);
-      setHistoryListToDo(newData);
+      const newData = listToDoHistory.filter(val => val !== item);
+      setListToDoHistory(newData);
       _storeData(newData);
   };
 
   const clearList = async () =>{
     await AsyncStorage.removeItem('ToDoListHistory');
-    setHistoryListToDo([]);
+    setListToDoHistory([]);
     };
   return (
     <>
@@ -61,12 +61,13 @@ function HistoryScreen (props) {
             </View>
             <FlatList
                 keyExtractor={(item, index) => 'key'+index}
-                data={historyListToDo}
+                data={listToDoHistory}
                 renderItem={({item}) =>
                 <ScrollView>
                     <View style={{flexDirection:'row-reverse',paddingLeft:40,marginVertical:5}}>
-                        <Text style={{fontSize:16,width:'70%',left:10,bottom:1,}}>
-                            <Text style={{fontWeight: 'bold'}}>-</Text> {item.key}
+                        <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/minus_ic.png')}/>
+                        <Text style={{textAlign:'right',fontSize:16,width:'70%',left:10,bottom:1}}>
+                            {item.key}
                         </Text>
                     </View>
                     <View style={{position:'absolute',flexDirection:'row',top:3,left:10}}>
