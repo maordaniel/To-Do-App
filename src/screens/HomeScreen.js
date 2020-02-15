@@ -130,7 +130,6 @@ function HomeScreen (props) {
         <View style={{flexDirection:'row',justifyContent:'center',marginBottom:10,bottom:5}}>
             <Text style={styles.h2}>{`${toDoList.length - restList} Remaining out of ${toDoList.length}`}</Text>
         </View>
-        {/*    משימות שנותרו מתוך*/}
         <FlatList
             data={toDoList}
             renderItem={({item}) =>
@@ -140,13 +139,13 @@ function HomeScreen (props) {
                 {item.strike ?
                 <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/point.png')}/> :
                 <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/empty_icon.png')}/>}
-                <Text style={{width:'70%',left:10 ,textDecorationLine: item.strike ?'line-through' :null,
+                <Text style={{textAlign:'right', width:'70%', left:10 ,textDecorationLine: item.strike ?'line-through' :null,
                     fontSize:16,textDecorationStyle: item.strike ?'solid':null}}>
                 {item.key}
                 </Text>
                 </TouchableOpacity>
-                <View style={{position:'absolute',flexDirection:'row',top:7,left:10}}>
-                {item.strike ? <Image style={{width:17,height:17}} source={require('../assets/icons/ic_success.png')}/>
+                <View style={{position:'absolute', flexDirection:'row', top:7, left:10}}>
+                {item.strike ? <Image style={{width:17, height:17}} source={require('../assets/icons/ic_success.png')}/>
                     : <TouchableOpacity onPress={() => deleteItem(item)}>
                             <Image style={{width:25,height:25}} source={require('../assets/icons/trash_icon.png')}/>
                         </TouchableOpacity>}
