@@ -10,12 +10,13 @@ import {
 import AppBox from '../component/AppBox';
 import { AsyncStorage } from 'react-native';
 import AppBar from '../component/AppBar';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 I18nManager.forceRTL(true);
 
 
 function HistoryScreen (props) {
   const {navigate} = props.navigation;
-  const [listToDoHistory, setListToDoHistory] = useState([]);
+  const [historyListToDo, setHistoryListToDo] = useState([]);
 
     useEffect(()=>{
         _retrieveData();
@@ -33,7 +34,7 @@ function HistoryScreen (props) {
           const value = await AsyncStorage.getItem('ToDoListHistory');
           console.log(JSON.parse(value));
           if (value !== null) {
-            setListToDoHistory(JSON.parse(value));
+            setHistoryListToDo(JSON.parse(value));
           }
       } catch (error) {
           // Error saving data
@@ -41,45 +42,45 @@ function HistoryScreen (props) {
     };
 
     const deleteItem = item =>{
-      const newData = listToDoHistory.filter(val => val !== item);
-      setListToDoHistory(newData);
+      const newData = historyListToDo.filter(val => val !== item);
+      setHistoryListToDo(newData);
       _storeData(newData);
   };
 
   const clearList = async () =>{
     await AsyncStorage.removeItem('ToDoListHistory');
-    setListToDoHistory([]);
+    setHistoryListToDo([]);
     };
   return (
     <>
     <StatusBar barStyle="dark-content" />
-    <SafeAreaView style={{backgroundColor:'#66788A',height:"100%"}} >
-        <AppBox style={{height:"94%",marginVertical:20}}>
+    <SafeAreaView style={{backgroundColor:'#66788A', height:"100%"}} >
+        <AppBox style={{height:"94%", marginVertical:20}}>
             <AppBar navigate={navigate}/>
-            <View style={{alignItems:'center',marginBottom:20}}>
+            <View style={{alignItems:'center', marginBottom:20}}>
                 <Text style={styles.h1}>ToDo List History</Text>
             </View>
             <FlatList
                 keyExtractor={(item, index) => 'key'+index}
-                data={listToDoHistory}
+                data={historyListToDo}
                 renderItem={({item}) =>
                 <ScrollView>
-                    <View style={{flexDirection:'row-reverse',paddingLeft:40,marginVertical:5}}>
-                        <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/minus_ic.png')}/>
-                        <Text style={{textAlign:'right',fontSize:16,width:'70%',left:10,bottom:1}}>
+                    <View style={{flexDirection:'row-reverse', paddingLeft:20, marginVertical:5}}>
+                        <Image style={{top:3, width:17,height:17}} source={require('../assets/icons/minus_ic.png')}/>
+                        <Text style={{textAlign:'right', fontSize:16, width:'70%', left:10, bottom:1}}>
                             {item.key}
                         </Text>
                     </View>
-                    <View style={{position:'absolute',flexDirection:'row',top:3,left:10}}>
+                    <View style={{position:'absolute', flexDirection:'row', top:3, left:10}}>
                         <TouchableOpacity onPress={() => deleteItem(item)}>
                             <Image style={{width:25,height:25}} source={require('../assets/icons/trash_icon.png')}/>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
             }/>
-            <View style={{marginHorizontal:10,flexDirection:'row-reverse',justifyContent:'center'}}>
+            <View style={{marginHorizontal:10, flexDirection:'row-reverse', justifyContent:'center'}}>
                 <TouchableOpacity onPress={()=> clearList()} style={{alignItems:'center'}}>
-                    <Text style={{fontSize:15,color:'blue'}}>Clear History</Text>
+                    <Text style={{fontSize:15, color:'blue'}}>Clear History</Text>
                 </TouchableOpacity>
             </View>
         </AppBox>
