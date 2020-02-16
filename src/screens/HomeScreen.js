@@ -139,7 +139,8 @@ function HomeScreen (props) {
         </AppBox>
         <AppBox style={{height:"90%"}}>
         <View style={{flexDirection:'row-reverse',marginVertical:20,justifyContent:'center'}}>
-            <TextInput  style={{ width:wp('70%'), height: 40, borderColor: 'gray', borderWidth: 1 }} onChangeText={(text) => setTextValue(text)} value={textValue}/>
+            <TextInput  style={{ width:wp('70%'), height: 40, borderColor: 'gray', borderWidth: 1 }}
+                        onChangeText={(text) => setTextValue(text)} value={textValue}/>
             <Button title={"Add"} onPress={()=> addToList()}/>
         </View>
         <View style={{flexDirection:'row',justifyContent:'center',marginBottom:10,bottom:5}}>
@@ -173,7 +174,7 @@ function HomeScreen (props) {
                     <Text style={{fontSize:15,color:'blue'}}>Clear List</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigate("History")}>
-                    <Text style={{fontSize:15,color:'blue'}}>History List</Text>
+                    <Text style={{fontSize:15,color:'blue'}}>History</Text>
                 </TouchableOpacity>
             </View>
         </AppBox>
