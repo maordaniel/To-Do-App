@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import AppBox from '../component/AppBox';
 import { AsyncStorage } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 I18nManager.forceRTL(true);
 
 
@@ -76,6 +77,7 @@ function HomeScreen (props) {
         (/^\s*$/.test(x))
   );
 };
+
   const addToList = () => {
     if (is_empty(textValue)) {
         alert('Sorry Your Input Is Not Valid.')
@@ -104,11 +106,24 @@ function HomeScreen (props) {
         }
     }
   };
+
+    const removeMarkItem = item =>{
+      const newData = toDoList.map(el => {
+                if(el === item)
+                   return Object.assign({}, el, {strike:false});
+                return el
+            });
+      setToDoList(newData);
+      setRestList(restList - 1 );
+      _storeData(newData);
+  };
+
     const deleteItem = item =>{
         const newData = toDoList.filter(value => value !== item);
       setToDoList(newData);
       _storeData(newData);
     };
+
     const clearList = async () =>{
         await AsyncStorage.removeItem('ToDoList');
         setToDoList([]);
@@ -124,7 +139,7 @@ function HomeScreen (props) {
         </AppBox>
         <AppBox style={{height:"90%"}}>
         <View style={{flexDirection:'row-reverse',marginVertical:20,justifyContent:'center'}}>
-            <TextInput  style={{ width:300, height: 40, borderColor: 'gray', borderWidth: 1 }} onChangeText={(text) => setTextValue(text)} value={textValue}/>
+            <TextInput  style={{ width:wp('70%'), height: hp('5.5%'), borderColor: 'gray', borderWidth: 1 }} onChangeText={(text) => setTextValue(text)} value={textValue}/>
             <Button title={"Add"} onPress={()=> addToList()}/>
         </View>
         <View style={{flexDirection:'row',justifyContent:'center',marginBottom:10,bottom:5}}>
@@ -134,20 +149,21 @@ function HomeScreen (props) {
             data={toDoList}
             renderItem={({item}) =>
             <ScrollView>
-            <TouchableOpacity disabled={item.strike} onPress={()=> markItem(item)}
-                              style={{flexDirection:'row-reverse',paddingLeft:40,marginVertical:5}}>
-                {item.strike ?
-                <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/point.png')}/> :
-                <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/empty_icon.png')}/>}
-                <Text style={{textAlign:'right', width:'70%', left:10 ,textDecorationLine: item.strike ?'line-through' :null,
-                    fontSize:16,textDecorationStyle: item.strike ?'solid':null}}>
-                {item.key}
-                </Text>
+                <TouchableOpacity onPress={()=> item.strike ? removeMarkItem(item) : markItem(item)}
+                                  style={{flexDirection:'row-reverse',paddingLeft:10,marginVertical:5}}>
+                    {item.strike ?
+                    <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/point.png')}/> :
+                    <Image style={{top:3,width:17,height:17}} source={require('../assets/icons/empty_icon.png')}/>}
+                    <Text style={{textAlign:'right', width:'70%',left:10 ,textDecorationLine: item.strike ?'line-through' :null,
+                        fontSize:16,textDecorationStyle: item.strike ?'solid':null}}>
+                    {item.key}
+                    </Text>
                 </TouchableOpacity>
-                <View style={{position:'absolute', flexDirection:'row', top:7, left:10}}>
-                {item.strike ? <Image style={{width:17, height:17}} source={require('../assets/icons/ic_success.png')}/>
+                <View style={{position:'absolute',flexDirection:'row',top:7,left:10}}>
+                {item.strike ?
+                        <Image style={{width:17,height:17}} source={require('../assets/icons/ic_success.png')}/>
                     : <TouchableOpacity onPress={() => deleteItem(item)}>
-                            <Image style={{width:25,height:25}} source={require('../assets/icons/trash_icon.png')}/>
+                            <Image style={{bottom:5, width:25, height:25}} source={require('../assets/icons/trash_icon.png')}/>
                         </TouchableOpacity>}
                 </View>
             </ScrollView>
