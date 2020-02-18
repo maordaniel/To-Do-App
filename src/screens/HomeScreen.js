@@ -100,11 +100,7 @@ function HomeScreen (props) {
             });
       setToDoList(newData);
       _storeData(newData);
-      for (let i =0; i < newData.length;i++){
-        if(newData[i].strike){
-           setRestList(i + 1);
-        }
-    }
+      setRestList(restList + 1 );
   };
 
     const removeMarkItem = item =>{
