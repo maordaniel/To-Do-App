@@ -1,4 +1,4 @@
-# To-Do-List
+# To-Do-App
 React-Native App(ES6)
 
 First run in terminal:
